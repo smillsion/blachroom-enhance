@@ -109,7 +109,7 @@ class Blackroom(Plugin):
                     if mmnick:
                         nick = mmnick[0]
                     # 不在white_list
-                    if nick not in self.white_list:
+                    if nickname not in self.white_list or nick not in self.white_list:
                         # 添加进已经在white_list
                         self.white_list.append(nick)
                         ok, result = True, self.patronus_key[2]
@@ -124,7 +124,7 @@ class Blackroom(Plugin):
                     if mmnick:
                         nick = mmnick[0]
                     # 在white_list
-                    if nick in self.white_list:
+                    if nickname in self.white_list or nick in self.white_list:
                         ok, result = True, f"{self.ban_key[2]}"
                         self.white_list.remove(nick)
                     else:
