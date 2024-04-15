@@ -111,47 +111,47 @@ class Blackroom(Plugin):
             nick = None
             # 启动守护
             if self.patronus_key[0] in context.content:
-                if not isadmin:
+                mmnick = re.findall(r'@(\S+)', context.content)
+                at_str = re.findall(r'@', context.content)
+                if not at_str:
+                    ok = False
+                    pass
+                elif not mmnick:
+                    ok, result = True, f"需要@一个用户"
+                elif not isadmin:
                     ok, result = True, "需要管理员权限执行"
                 else:
-                    mmnick = re.findall(r'@(\S+)', context.content)
-                    at_str = re.findall(r'@', context.content)
-                    if not at_str:
-                        pass
-                    elif not mmnick:
-                        ok, result = True, f"需要@一个用户"
+                    nick = mmnick[0]
+                    # 不在white_list
+                    if nick not in self.white_list:
+                        # 添加进已经在white_list
+                        self.white_list.append(nick)
+                        ok, result = True, self.patronus_key[2]
                     else:
-                        nick = mmnick[0]
-                        # 不在white_list
-                        if nick not in self.white_list:
-                            # 添加进已经在white_list
-                            self.white_list.append(nick)
-                            ok, result = True, self.patronus_key[2]
-                        else:
-                            # 在white_list
-                            logger.warning(f"[WX] {nick} {self.patronus_key[1]}")
-                            ok, result = True, f"{self.patronus_key[1]}"
+                        # 在white_list
+                        logger.warning(f"[WX] {nick} {self.patronus_key[1]}")
+                        ok, result = True, f"{self.patronus_key[1]}"
 
             # 解除守护
             elif self.ban_key[0] in context.content:
-                if not isadmin:
+                mmnick = re.findall(r'@(\S+)', context.content)
+                at_str = re.findall(r'@', context.content)
+                if not at_str:
+                    ok = False
+                    pass
+                elif not mmnick:
+                    ok, result = True, f"需要@一个用户"
+                elif not isadmin:
                     ok, result = True, "需要管理员权限执行"
                 else:
-                    mmnick = re.findall(r'@(\S+)', context.content)
-                    at_str = re.findall(r'@', context.content)
-                    if not at_str:
-                        pass
-                    elif not mmnick:
-                        ok, result = True, f"需要@一个用户"
+                    nick = mmnick[0]
+                    # 在white_list
+                    if nick in self.white_list:
+                        ok, result = True, f"{self.ban_key[2]}"
+                        self.white_list.remove(nick)
                     else:
-                        nick = mmnick[0]
-                        # 在white_list
-                        if nick in self.white_list:
-                            ok, result = True, f"{self.ban_key[2]}"
-                            self.white_list.remove(nick)
-                        else:
-                            logger.warning(f"[WX] {nick} {self.ban_key[3]}")
-                            ok, result = True, f"{self.ban_key[3]}"
+                        logger.warning(f"[WX] {nick} {self.ban_key[3]}")
+                        ok, result = True, f"{self.ban_key[3]}"
             elif isadmin:
                 ok, result = False, f"关键词不命中，管理员跳过权限校验"
 
