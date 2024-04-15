@@ -15,8 +15,9 @@ from config import conf, global_config
     name="blackroom",
     desire_priority=998,
     desc="Being locked in a black room or privilege to somebody",
-    version="0.1",
+    version="0.1.1",
     author="dividduang",
+    maintainer="david"
 )
 class Blackroom(Plugin):
     print("Python 版本:", sys.version)
