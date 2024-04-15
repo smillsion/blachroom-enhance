@@ -36,9 +36,9 @@ chatgpt-on-wechat plugins
 ### json格式：
 ``` json
 {
-  "incantation" : ["枪毙","该用户已经枪毙","枪毙成功"],   
-  "amnesty" : ["复活","躺着，好好反省","复活成功","该用户没有要枪毙"],   
-  "admin_nickname" : ["小鸟鸣"]
+  "incantation" : ["枪毙","该用户已经枪毙","枪毙成功"],
+  "amnesty" : ["复活","躺着，好好反省","复活成功","该用户没有要枪毙"],
+  "admin_nickname" : ["小鸟鸣"]
 }
 ```
 
