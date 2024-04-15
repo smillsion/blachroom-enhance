@@ -27,7 +27,7 @@ chatgpt-on-wechat plugins
     }
   ```
   
-# config.json格式：
+## config.json格式：
 ``` json
 {
   "type": "black",
