@@ -62,14 +62,16 @@ class Blackroom(Plugin):
             else:
                 cmd = context.content.split()
                 if len(cmd) == 2 and cmd[1] == "help":
-                    ok, result = True, f"$blackroom type get/$blackroom type set white||black"
-                if len(cmd) == 3 and cmd[1] == 'type':
+                    ok, result = True, f"查询当前类型：$blackroom type get\n\n修改类型：$blackroom type set white/black"
+                if len(cmd) >= 3 and cmd[1] == 'type':
                     if cmd[2] == 'set':
-                        if cmd[3] == "white" or cmd[1] == "black":
+                        if cmd[3] == "white" or cmd[3] == "black":
                             self.type = cmd[3]
                             self.black_list = []
                             self.white_list = []
-                        ok, result = True, f"设置成功，当前type为：" + cmd[3]
+                            ok, result = True, f"设置成功，当前type为：" + cmd[3]
+                        else:
+                            ok, result = True, f"type参数错误，white-白名单模式，black-黑名单模式"
                     elif cmd[2] == 'get':
                         ok, result = True, f"当前type为：" + self.type
         elif self.type == "black":
