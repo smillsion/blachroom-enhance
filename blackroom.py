@@ -47,18 +47,36 @@ class Blackroom(Plugin):
         context = e_context['context']
 
         msg: ChatMessage = context['msg']
-        # isgroup = e_context["context"].get("isgroup")
+        isgroup = e_context["context"].get("isgroup")
         nickname = msg.actual_user_nickname  # 获取nickname
 
         isadmin = self.is_admin_in_group(e_context["context"])
         result = "string"
         ok = False
 
-        if self.type == "black":
+        if context.content.startswith('$blackroom'):
+            if isgroup:
+                ok, result = True, f"请勿在群聊中执行该指令"
+            elif not isadmin:
+                ok, result = True, f"需要管理员权限执行"
+            else:
+                cmd = context.content.split()
+                if len(cmd) == 2 and cmd[1] == "help":
+                    ok, result = True, f"$blackroom type get/$blackroom type set white||black"
+                if len(cmd) == 3 and cmd[1] == 'type':
+                    if cmd[2] == 'set':
+                        if cmd[3] == "white" or cmd[1] == "black":
+                            self.type = cmd[3]
+                            self.black_list = []
+                            self.white_list = []
+                        ok, result = True, f"设置成功，当前type为：" + cmd[3]
+                    elif cmd[2] == 'get':
+                        ok, result = True, f"当前type为：" + self.type
+        elif self.type == "black":
             if nickname in self.black_list:
                 logger.warning(f"[WX] {nickname} in In BlackRoom, ignore")
                 ok, result = True, f"{self.amnesty_key[1]}"
-            nick = None
+
             # 启动命令
             if self.incantation_key[0] in context.content:
                 mmnick = re.findall(r'@(\S+)', context.content)
@@ -108,7 +126,6 @@ class Blackroom(Plugin):
                 logger.warning(f"[WX] {nickname} not In WhiteRoom, ignore")
                 ok, result = True, f"{self.ban_key[1]}"
 
-            nick = None
             # 启动守护
             if self.patronus_key[0] in context.content:
                 mmnick = re.findall(r'@(\S+)', context.content)
@@ -170,7 +187,9 @@ class Blackroom(Plugin):
     def is_admin_in_group(self, context):
         if context["isgroup"]:
             return context.kwargs.get("msg").actual_user_id in global_config["admin_users"]
-        return False
+        else:
+            return context.kwargs.get("msg").from_user_id in global_config["admin_users"]
+
 
     def get_help_text(self, **kwargs):
         help_text = "对群主不客气会被拉到小黑屋哦！"
