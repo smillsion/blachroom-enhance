@@ -20,8 +20,7 @@ chatgpt-on-wechat plugins
 * 2024-4-15： 
   * 增加白名单模式,type修改为white即可切换白名单模式
   * 修改配置文件读取方式，先从全局配置文件读取，如果读取不到插件配置，再从当前插件目录获取配置<br/>docker可以在映射出来的config.json增加以下配置内容，参考：[官方文档](https://github.com/zhayujie/chatgpt-on-wechat?tab=readme-ov-file#3-%E6%8F%92%E4%BB%B6%E4%BD%BF%E7%94%A8)
-  ```json
-  {
+  ```
    "blackroom":{
         "type": "black",
         "incantation" : ["封印","该用户已经封印","封印成功"],
@@ -29,7 +28,6 @@ chatgpt-on-wechat plugins
         "patronus" : ["赐予能力","该用户已获得过能力","赐予能力成功"],
         "ban" : ["收回能力","你未获得能力","收回能力成功","该用户没有获得能力"]
     }
-  }
   ```
 
 
